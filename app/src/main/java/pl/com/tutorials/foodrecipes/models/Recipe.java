@@ -55,6 +55,10 @@ public class Recipe implements Parcelable {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getPublisher() {
         return publisher;
     }
@@ -71,8 +75,16 @@ public class Recipe implements Parcelable {
         return imageUrl;
     }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public float getSocialRank() {
         return socialRank;
+    }
+
+    public void setSocialRank(float socialRank) {
+        this.socialRank = socialRank;
     }
 
     @Override

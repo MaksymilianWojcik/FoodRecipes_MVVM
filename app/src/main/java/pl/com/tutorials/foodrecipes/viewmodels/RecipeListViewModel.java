@@ -12,9 +12,11 @@ import pl.com.tutorials.foodrecipes.repositories.RecipeRepository;
 public class RecipeListViewModel extends ViewModel {
 
     private RecipeRepository mRecipeRepository;
+    private boolean mIsViewingRecipes;
 
     public RecipeListViewModel() {
-        mRecipeRepository = RecipeRepository.getInstance();
+        this.mIsViewingRecipes = false;
+        this.mRecipeRepository = RecipeRepository.getInstance();
     }
 
     public LiveData<List<Recipe>> getRecipes(){
@@ -22,10 +24,18 @@ public class RecipeListViewModel extends ViewModel {
     }
 
     public void searchRecipesAPI(String query, int pageNumber){
+        mIsViewingRecipes = true;
         if (pageNumber == 0){
             pageNumber = 1;
         }
         mRecipeRepository.searchRecipesAPI(query, pageNumber);
     }
 
+    public boolean isViewingRecipes() {
+        return mIsViewingRecipes;
+    }
+
+    public void setIsViewingRecipes(boolean mIsViewingRecipes) {
+        this.mIsViewingRecipes = mIsViewingRecipes;
+    }
 }

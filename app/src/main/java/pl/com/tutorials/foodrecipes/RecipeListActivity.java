@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 
 import java.util.List;
@@ -34,7 +35,12 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         mRecipeListViewModel = ViewModelProviders.of(this).get(RecipeListViewModel.class);
         initRecyclerView();
         subscribeObservers();
-        testRetrofitRequest();
+        initSearchView();
+
+        if(!mRecipeListViewModel.isViewingRecipes()){
+            //display search categories
+            displaySearchCategories();
+        }
     }
 
     private void subscribeObservers(){
@@ -50,18 +56,27 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         });
     }
 
-    public void searchRecipesAPI(String query, int pageNumber) {
-        mRecipeListViewModel.searchRecipesAPI(query, pageNumber);
-    }
-
-    private void testRetrofitRequest(){
-        searchRecipesAPI("chicken breast", 1);
-    }
-
     private void initRecyclerView(){
         mAdapter = new RecipeRecyclerAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private void initSearchView(){
+        final SearchView searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mAdapter.displayLoading();
+                mRecipeListViewModel.searchRecipesAPI(s, 1);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -71,6 +86,12 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
 
     @Override
     public void onCategoryClick(String category) {
+        mAdapter.displayLoading();
+        mRecipeListViewModel.searchRecipesAPI(category, 1);
+    }
 
+    private void displaySearchCategories(){
+        mRecipeListViewModel.setIsViewingRecipes(false);
+        mAdapter.displaySearchCategories();
     }
 }
