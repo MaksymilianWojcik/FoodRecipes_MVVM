@@ -15,6 +15,7 @@ import pl.com.tutorials.foodrecipes.adapters.OnRecipeListener;
 import pl.com.tutorials.foodrecipes.adapters.RecipeRecyclerAdapter;
 import pl.com.tutorials.foodrecipes.models.Recipe;
 import pl.com.tutorials.foodrecipes.util.Testing;
+import pl.com.tutorials.foodrecipes.util.VerticalSpacingItemDecorator;
 import pl.com.tutorials.foodrecipes.viewmodels.RecipeListViewModel;
 
 public class RecipeListActivity extends BaseActivity implements OnRecipeListener {
@@ -58,8 +59,10 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
 
     private void initRecyclerView(){
         mAdapter = new RecipeRecyclerAdapter(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        VerticalSpacingItemDecorator verticalSpacingItemDecorator = new VerticalSpacingItemDecorator(30);
+        recyclerView.addItemDecoration(verticalSpacingItemDecorator);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void initSearchView(){
