@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.List;
 
@@ -44,6 +47,9 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
             //display search categories
             displaySearchCategories();
         }
+
+        //associating our custom toolbar with the support action bar in the activity
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
     }
 
     @Override
@@ -53,6 +59,25 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         } else {
             displaySearchCategories();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_search_menu, menu); //this will inflate the menu
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_categories: {
+                displaySearchCategories();
+            }
+            case R.id.action_about: {
+                //TODO: about dialog
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void subscribeObservers(){
