@@ -12,7 +12,7 @@ public class AppValues {
             "Chicken",
             "Beef",
             "Brunch",
-            "Diner",
+            "Dinner",
             "Wine",
             "Italian"
     };
@@ -23,7 +23,7 @@ public class AppValues {
             "chicken",
             "beef",
             "brunch",
-            "diner",
+            "dinner",
             "wine",
             "italian"
     };

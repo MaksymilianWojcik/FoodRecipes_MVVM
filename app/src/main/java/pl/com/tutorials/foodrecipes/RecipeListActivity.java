@@ -20,7 +20,6 @@ import pl.com.tutorials.foodrecipes.viewmodels.RecipeListViewModel;
 
 public class RecipeListActivity extends BaseActivity implements OnRecipeListener {
 
-
     private static final String TAG = "RecipeListActivity";
 
     private RecipeListViewModel mRecipeListViewModel;
@@ -28,11 +27,14 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     private RecyclerView recyclerView;
     private RecipeRecyclerAdapter mAdapter;
 
+    private SearchView mSearchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
         recyclerView = findViewById(R.id.recipe_list);
+        mSearchView = findViewById(R.id.search_view);
         mRecipeListViewModel = ViewModelProviders.of(this).get(RecipeListViewModel.class);
         initRecyclerView();
         subscribeObservers();
@@ -44,13 +46,23 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(mRecipeListViewModel.onBackPressed()){
+            super.onBackPressed();
+        } else {
+            displaySearchCategories();
+        }
+    }
+
     private void subscribeObservers(){
         mRecipeListViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
                 Log.i(TAG, "onChanged: ");
-                if(recipes != null) {
+                if(recipes != null && mRecipeListViewModel.isViewingRecipes()) {
                     Testing.printRecipes(recipes, "recipesTest");
+                    mRecipeListViewModel.setIsPerformingQuery(false); //query was complete
                     mAdapter.setmRecipes(recipes);
                 }
             }
@@ -66,12 +78,12 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     }
 
     private void initSearchView(){
-        final SearchView searchView = findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 mAdapter.displayLoading();
                 mRecipeListViewModel.searchRecipesAPI(s, 1);
+                mSearchView.clearFocus(); //removing focus from searchview so it won't consume click anymore. This is improtant for back button work proipely with our logic to stop the request
                 return false;
             }
 
@@ -96,5 +108,6 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     private void displaySearchCategories(){
         mRecipeListViewModel.setIsViewingRecipes(false);
         mAdapter.displaySearchCategories();
+        mSearchView.clearFocus(); //removing focus from searchview so it won't consume click anymore. This is improtant for back button work proipely with our logic to stop the request
     }
 }

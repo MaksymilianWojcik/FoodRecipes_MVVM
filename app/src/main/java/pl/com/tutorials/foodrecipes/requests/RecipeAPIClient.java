@@ -57,6 +57,12 @@ public class RecipeAPIClient {
         }, AppValues.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);
     }
 
+    public void cancelRequest(){
+        if(retrieveRecipesRunnable != null) {
+            retrieveRecipesRunnable.cancelRequest();
+        }
+    }
+
     private class RetrieveRecipesRunnable implements Runnable {
 
         private String query;
