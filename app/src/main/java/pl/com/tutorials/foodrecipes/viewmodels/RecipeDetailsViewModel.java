@@ -19,6 +19,10 @@ public class RecipeDetailsViewModel extends ViewModel {
         return mRecipeRepository.getRecipe();
     }
 
+    public LiveData<Boolean> isRecipeRequestTimedout(){
+        return mRecipeRepository.isRecipeRequestTimedout();
+    }
+
     public void searchRecipeById(String recipeId ){
         mRecipeId = recipeId;
         mRecipeRepository.searchRecipeById(recipeId);

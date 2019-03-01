@@ -81,6 +81,16 @@ public class RecipeDetailsActivity extends BaseActivity {
                 }
             }
         });
+
+        recipeDetailsViewModel.isRecipeRequestTimedout().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean){
+                    //timedout
+                    Log.d(TAG, "onChanged: timedout");
+                }
+            }
+        });
     }
 
 

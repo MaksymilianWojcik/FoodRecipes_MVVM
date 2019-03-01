@@ -33,6 +33,10 @@ public class RecipeRepository {
         return recipeAPIClient.getRecipe();
     }
 
+    public LiveData<Boolean> isRecipeRequestTimedout(){
+        return recipeAPIClient.isRecipeRequestTimedout();
+    }
+
 
     public void searchRecipesAPI(String query, int pageNumber){
         if (pageNumber == 0){
