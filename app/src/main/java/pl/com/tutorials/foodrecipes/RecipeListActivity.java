@@ -2,13 +2,13 @@ package pl.com.tutorials.foodrecipes;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,10 +26,8 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     private static final String TAG = "RecipeListActivity";
 
     private RecipeListViewModel mRecipeListViewModel;
-
     private RecyclerView recyclerView;
     private RecipeRecyclerAdapter mAdapter;
-
     private SearchView mSearchView;
 
     @Override
@@ -53,15 +51,6 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     }
 
     @Override
-    public void onBackPressed() {
-        if(mRecipeListViewModel.onBackPressed()){
-            super.onBackPressed();
-        } else {
-            displaySearchCategories();
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.recipe_search_menu, menu); //this will inflate the menu
         return super.onCreateOptionsMenu(menu);
@@ -74,32 +63,30 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
                 displaySearchCategories();
             }
             case R.id.action_about: {
-                //TODO: about dialog
+                //TODO: about dialog fragment
             }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void subscribeObservers(){
-        mRecipeListViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
-            @Override
-            public void onChanged(@Nullable List<Recipe> recipes) {
-                Log.i(TAG, "onChanged: ");
-                if(recipes != null && mRecipeListViewModel.isViewingRecipes()) {
-                    Testing.printRecipes(recipes, "recipesTest");
-                    mRecipeListViewModel.setIsPerformingQuery(false); //query was complete
-                    mAdapter.setmRecipes(recipes);
-                }
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        if(mRecipeListViewModel.onBackPressed()){
+            super.onBackPressed();
+        } else {
+            displaySearchCategories();
+        }
     }
 
-    private void initRecyclerView(){
-        mAdapter = new RecipeRecyclerAdapter(this);
-        VerticalSpacingItemDecorator verticalSpacingItemDecorator = new VerticalSpacingItemDecorator(30);
-        recyclerView.addItemDecoration(verticalSpacingItemDecorator);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    @Override
+    public void onRecipeClick(int position) {
+
+    }
+
+    @Override
+    public void onCategoryClick(String category) {
+        mAdapter.displayLoading();
+        mRecipeListViewModel.searchRecipesAPI(category, 1);
     }
 
     private void initSearchView(){
@@ -119,15 +106,35 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         });
     }
 
-    @Override
-    public void onRecipeClick(int position) {
-
+    private void subscribeObservers(){
+        mRecipeListViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+                if(recipes != null && mRecipeListViewModel.isViewingRecipes()) {
+                    Testing.printRecipes(recipes, "recipesTest");
+                    mRecipeListViewModel.setIsPerformingQuery(false); //query was complete
+                    mAdapter.setmRecipes(recipes);
+                }
+            }
+        });
     }
 
-    @Override
-    public void onCategoryClick(String category) {
-        mAdapter.displayLoading();
-        mRecipeListViewModel.searchRecipesAPI(category, 1);
+    private void initRecyclerView(){
+        mAdapter = new RecipeRecyclerAdapter(this);
+        VerticalSpacingItemDecorator verticalSpacingItemDecorator = new VerticalSpacingItemDecorator(30);
+        recyclerView.addItemDecoration(verticalSpacingItemDecorator);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if(!recyclerView.canScrollVertically(1)){
+                    //cannot scroll anymore, we should now search for next site
+                    mRecipeListViewModel.searchNextPage();
+                }
+            }
+        });
     }
 
     private void displaySearchCategories(){
@@ -135,4 +142,6 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         mAdapter.displaySearchCategories();
         mSearchView.clearFocus(); //removing focus from searchview so it won't consume click anymore. This is improtant for back button work proipely with our logic to stop the request
     }
+
+
 }

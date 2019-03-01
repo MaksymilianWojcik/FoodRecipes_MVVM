@@ -82,12 +82,23 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemViewType(int position) {
         if(mRecipes.get(position).getSocialRank() == -1){
             return CATEGORY_TYPE;
-        }
-        else if(mRecipes.get(position).getTitle().equals("LOADING...")){
+        } else if(position == mRecipes.size() - 1 //position == mRecipses.size()-1 means that we are at the end of the list
+                && position != 0  // postion != 0 cause we dont want to show it when its empty
+                && !mRecipes.get(position).getTitle().equals("EXHAUSTED...")){ //for method that checks if there are no any results to retrieve
+            return LOADING_TYPE;
+        } else if(mRecipes.get(position).getTitle().equals("LOADING...")){
             return LOADING_TYPE;
         } else {
             return RECIPE_TYPE;
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        if(mRecipes != null) {
+            return mRecipes.size();
+        }
+        return 0;
     }
 
     public void displayLoading(){
@@ -122,14 +133,6 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         }
         return false;
-    }
-
-    @Override
-    public int getItemCount() {
-        if(mRecipes != null) {
-            return mRecipes.size();
-        }
-        return 0;
     }
 
     public void setmRecipes(List<Recipe> recipes){
