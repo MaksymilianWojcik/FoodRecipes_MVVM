@@ -29,6 +29,11 @@ public class RecipeRepository {
         return recipeAPIClient.getRecipes();
     }
 
+    public LiveData<Recipe > getRecipe(){
+        return recipeAPIClient.getRecipe();
+    }
+
+
     public void searchRecipesAPI(String query, int pageNumber){
         if (pageNumber == 0){
             pageNumber = 1;
@@ -36,6 +41,10 @@ public class RecipeRepository {
         query = query; //saving to access as previous state
         pageNumber = pageNumber; //saving to access as previous state
         recipeAPIClient.searchRecipesAPI(query, pageNumber);
+    }
+
+    public void searchRecipeById(String recipeId){
+        recipeAPIClient.searchRecipeById(recipeId);
     }
 
     public void searchNextPage(){
