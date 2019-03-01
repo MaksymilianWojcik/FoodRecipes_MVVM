@@ -9,6 +9,7 @@ import pl.com.tutorials.foodrecipes.repositories.RecipeRepository;
 public class RecipeDetailsViewModel extends ViewModel {
 
     private RecipeRepository mRecipeRepository;
+    private String mRecipeId; //keepiong track of recipe id to handle "problem" with remembvered state
 
     public RecipeDetailsViewModel() {
         mRecipeRepository = RecipeRepository.getInstance();
@@ -19,6 +20,11 @@ public class RecipeDetailsViewModel extends ViewModel {
     }
 
     public void searchRecipeById(String recipeId ){
+        mRecipeId = recipeId;
         mRecipeRepository.searchRecipeById(recipeId);
+    }
+
+    public String getRecipeId() {
+        return mRecipeId;
     }
 }
