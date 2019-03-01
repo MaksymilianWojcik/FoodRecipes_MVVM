@@ -77,6 +77,7 @@ public class RecipeDetailsActivity extends BaseActivity {
                     if(recipeDetailsViewModel.getRecipeId().equals(recipe.getRecipeId())){
                         //we retrieved new recipe
                         setRecipeProperties(recipe);
+                        recipeDetailsViewModel.setDidRetrieveRecipe(true);
                     }
                 }
             }
@@ -85,7 +86,7 @@ public class RecipeDetailsActivity extends BaseActivity {
         recipeDetailsViewModel.isRecipeRequestTimedout().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if(aBoolean){
+                if(aBoolean && !recipeDetailsViewModel.didRetrieveRecipe()){
                     //timedout
                     Log.d(TAG, "onChanged: timedout");
                 }

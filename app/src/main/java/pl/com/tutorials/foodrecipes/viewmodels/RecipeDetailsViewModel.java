@@ -10,9 +10,11 @@ public class RecipeDetailsViewModel extends ViewModel {
 
     private RecipeRepository mRecipeRepository;
     private String mRecipeId; //keepiong track of recipe id to handle "problem" with remembvered state
+    private boolean mDidRetrieveRecipe;
 
     public RecipeDetailsViewModel() {
         mRecipeRepository = RecipeRepository.getInstance();
+        mDidRetrieveRecipe = false;
     }
 
     public LiveData<Recipe> getRecipe(){
@@ -30,5 +32,13 @@ public class RecipeDetailsViewModel extends ViewModel {
 
     public String getRecipeId() {
         return mRecipeId;
+    }
+
+    public boolean didRetrieveRecipe() {
+        return mDidRetrieveRecipe;
+    }
+
+    public void setDidRetrieveRecipe(boolean mDidRetrieveRecipe) {
+        this.mDidRetrieveRecipe = mDidRetrieveRecipe;
     }
 }
