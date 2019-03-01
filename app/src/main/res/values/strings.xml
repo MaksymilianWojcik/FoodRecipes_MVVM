@@ -3,4 +3,5 @@
     <string name="search_view_hint">chicken...</string>
     <string name="menu_item_categories">Categories</string>
     <string name="menu_item_about">About</string>
+    <string name="recipe_ingredients">Ingredients</string>
 </resources>
