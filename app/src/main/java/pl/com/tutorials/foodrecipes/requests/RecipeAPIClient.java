@@ -78,6 +78,8 @@ public class RecipeAPIClient {
         retrieveSingleRecipeRunnable = new RetrieveSingleRecipeRunnable(recipeId);
         final Future handler = AppExecutor.getInstance().networkIO().submit(retrieveSingleRecipeRunnable);
 
+        mRecipeRequestTimeout.postValue(false); //to fix the problem with network error screen when again retrieved error (a new child was added to previous one - error text) and also show again the loading indicator. so just to reset viewmodel state
+
         AppExecutor.getInstance().networkIO().schedule(new Runnable() {
             @Override
             public void run() {

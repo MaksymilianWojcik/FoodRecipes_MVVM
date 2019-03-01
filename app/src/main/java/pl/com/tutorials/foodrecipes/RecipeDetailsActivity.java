@@ -89,11 +89,36 @@ public class RecipeDetailsActivity extends BaseActivity {
                 if(aBoolean && !recipeDetailsViewModel.didRetrieveRecipe()){
                     //timedout
                     Log.d(TAG, "onChanged: timedout");
+                    displayErrorScreen("Error retrieving data. Check network connection!");
                 }
             }
         });
     }
 
+    private void displayErrorScreen(String errorMessage){
+        vRecipeTitle.setText("Error retrieving recipe...");
+        vRecipeRank.setText("");
+        TextView textView = new TextView(this);
+        if(!errorMessage.equals("")){
+            textView.setText(errorMessage);
+        } else {
+            textView.setText("Error");
+        }
+        textView.setTextSize(15);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        vRecipeIngredientsContainer.addView(textView);
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(R.drawable.ic_launcher_background);
+
+        Glide.with(this)
+                .setDefaultRequestOptions(requestOptions)
+                .load(R.drawable.ic_launcher_background)
+                .into(vRecipeImage);
+
+        showParent();
+        showProgressBar(false);
+
+    }
 
     private void setRecipeProperties(Recipe recipe){
         if(recipe != null){
