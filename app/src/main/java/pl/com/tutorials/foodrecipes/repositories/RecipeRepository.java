@@ -38,8 +38,8 @@ public class RecipeRepository {
         if (pageNumber == 0){
             pageNumber = 1;
         }
-        query = query; //saving to access as previous state
-        pageNumber = pageNumber; //saving to access as previous state
+        this.query = query; //saving to access as previous state
+        this.pageNumber = pageNumber; //saving to access as previous state
         recipeAPIClient.searchRecipesAPI(query, pageNumber);
     }
 
