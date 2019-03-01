@@ -2,6 +2,7 @@ package pl.com.tutorials.foodrecipes;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -80,7 +81,9 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
 
     @Override
     public void onRecipeClick(int position) {
-
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra(RecipeDetailsActivity.INTENT_EXTRA_RECIPE, mAdapter.getSelectedRecipe(position));
+        startActivity(intent);
     }
 
     @Override
@@ -142,6 +145,8 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         mAdapter.displaySearchCategories();
         mSearchView.clearFocus(); //removing focus from searchview so it won't consume click anymore. This is improtant for back button work proipely with our logic to stop the request
     }
+
+
 
 
 }

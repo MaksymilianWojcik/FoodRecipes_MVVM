@@ -3,6 +3,7 @@ package pl.com.tutorials.foodrecipes;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import pl.com.tutorials.foodrecipes.models.Recipe;
 
 public class RecipeDetailsActivity extends BaseActivity {
+
+    private static final String TAG = "RecipeDetailsActivity";
 
     public static final String INTENT_EXTRA_RECIPE = "recipe";
 
@@ -29,6 +32,7 @@ public class RecipeDetailsActivity extends BaseActivity {
     private void getIncomingIntent(){
         if(getIntent().hasExtra(INTENT_EXTRA_RECIPE)){
             Recipe recipe = getIntent().getParcelableExtra(INTENT_EXTRA_RECIPE);
+            Log.d(TAG, "getIncomingIntent: " + recipe.getTitle());
         }
     }
 
