@@ -66,6 +66,7 @@ public class RecipeAPIClient {
                 //run after a specified time
                 //let the user know its timed out
                 //we schedule here so we can interrupt it anytime
+                Log.i(TAG, "run: search api timed out");
                 handler.cancel(true); //interrupting the backgrounthread from making request if timeout is over
             }
         }, AppValues.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -84,6 +85,7 @@ public class RecipeAPIClient {
             @Override
             public void run() {
                 mRecipeRequestTimeout.postValue(true);
+                Log.i(TAG, "run: search by id timed out");
                 handler.cancel(true);
             }
         }, AppValues.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -109,6 +111,7 @@ public class RecipeAPIClient {
                 if(cancelRequest){ return; }
                 if(response.code() == 200){
                     Log.i(TAG, "run: Resposne code == 200");
+                    Log.i(TAG, "run: response: " + response.toString() + ", " + response.errorBody());
                     List<Recipe> list = new ArrayList<>(((RecipeSearchResponse) response.body()).getRecipes());
                     Log.i(TAG, "run: " + list.toString());
                     if(pageNumber == 1){
