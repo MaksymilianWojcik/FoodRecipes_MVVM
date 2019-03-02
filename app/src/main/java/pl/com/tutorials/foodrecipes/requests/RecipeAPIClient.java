@@ -108,7 +108,9 @@ public class RecipeAPIClient {
                 Response response = getRecipes(query, pageNumber).execute(); //this will be executed o nthe backgorund thread, because this is accessing the netowrk request
                 if(cancelRequest){ return; }
                 if(response.code() == 200){
+                    Log.i(TAG, "run: Resposne code == 200");
                     List<Recipe> list = new ArrayList<>(((RecipeSearchResponse) response.body()).getRecipes());
+                    Log.i(TAG, "run: " + list.toString());
                     if(pageNumber == 1){
                         mRecipes.postValue(list);
                     } else {

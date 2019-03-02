@@ -22,6 +22,10 @@ public class RecipeListViewModel extends ViewModel {
 
     public LiveData<List<Recipe>> getRecipes(){
         return mRecipeRepository.getRecipes();
+
+    }
+    public LiveData<Boolean> isQueryExhausted(){
+        return mRecipeRepository.isQueryExhausted();
     }
 
     public void searchRecipesAPI(String query, int pageNumber){
@@ -33,7 +37,8 @@ public class RecipeListViewModel extends ViewModel {
     }
 
     public void searchNextPage(){
-        if(!isPerformingQuery() && isViewingRecipes()){
+        if(!isPerformingQuery() && isViewingRecipes()
+                && !isQueryExhausted().getValue()){ //if we try to search for next page, but query is exhausted, we dont want to do that
             mRecipeRepository.searchNextPage();
         }
     }
