@@ -44,12 +44,12 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.loading_list_item, viewGroup, false);
                 return new LoadingViewHolder(view);
             }
-            case CATEGORY_TYPE: {
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.category_list_item, viewGroup, false);
-                return new CategoryViewHolder(view, onRecipeListener);
-            }
             case EXHAUSTED_TYPE: {
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_exhausted_item, viewGroup, false);
+                return new SearchExhaustedViewHolder(view);
+            }
+            case CATEGORY_TYPE: {
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.category_list_item, viewGroup, false);
                 return new CategoryViewHolder(view, onRecipeListener);
             }
             default: {

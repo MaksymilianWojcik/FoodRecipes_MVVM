@@ -36,7 +36,12 @@ public class RecipeDetailsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
-        initViews();
+//        initViews();
+        vRecipeImage = findViewById(R.id.recipe_image);
+        vRecipeTitle = findViewById(R.id.recipe_title);
+        vRecipeRank = findViewById(R.id.recipe_social_score);
+        vRecipeIngredientsContainer = findViewById(R.id.ingredients_container);
+        vScrollView = findViewById(R.id.parent);
         recipeDetailsViewModel = ViewModelProviders.of(this).get(RecipeDetailsViewModel.class);
         showProgressBar(true);
         subscribeObservers();
@@ -74,7 +79,7 @@ public class RecipeDetailsActivity extends BaseActivity {
 //                    for(String ingredient : recipe.getIngredients()){
 //                        Log.d(TAG, "onChanged: ingredient: " + ingredient);
 //                    }
-                    if(recipeDetailsViewModel.getRecipeId().equals(recipe.getRecipeId())){
+                    if(recipe.getRecipeId().equals(recipeDetailsViewModel.getRecipeId())){
                         //we retrieved new recipe
                         setRecipeProperties(recipe);
                         recipeDetailsViewModel.setDidRetrieveRecipe(true);

@@ -30,14 +30,12 @@ public class RecipeListViewModel extends ViewModel {
 
     public void searchRecipesAPI(String query, int pageNumber){
         mIsViewingRecipes = true;
-        if (pageNumber == 0){
-            pageNumber = 1;
-        }
+        mIsPerformingQuery = true;
         mRecipeRepository.searchRecipesAPI(query, pageNumber);
     }
 
     public void searchNextPage(){
-        if(!isPerformingQuery() && isViewingRecipes()
+        if(!mIsPerformingQuery && mIsViewingRecipes
                 && !isQueryExhausted().getValue()){ //if we try to search for next page, but query is exhausted, we dont want to do that
             mRecipeRepository.searchNextPage();
         }

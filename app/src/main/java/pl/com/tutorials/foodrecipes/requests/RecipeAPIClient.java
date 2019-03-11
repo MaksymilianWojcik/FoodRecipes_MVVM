@@ -37,7 +37,7 @@ public class RecipeAPIClient {
     }
 
     private RecipeAPIClient(){
-        mRecipes = new MutableLiveData<List<Recipe>>();
+        mRecipes = new MutableLiveData<>();
         mRecipe = new MutableLiveData<>();
     }
 
@@ -79,7 +79,7 @@ public class RecipeAPIClient {
         retrieveSingleRecipeRunnable = new RetrieveSingleRecipeRunnable(recipeId);
         final Future handler = AppExecutor.getInstance().networkIO().submit(retrieveSingleRecipeRunnable);
 
-        mRecipeRequestTimeout.postValue(false); //to fix the problem with network error screen when again retrieved error (a new child was added to previous one - error text) and also show again the loading indicator. so just to reset viewmodel state
+        mRecipeRequestTimeout.setValue(false); //to fix the problem with network error screen when again retrieved error (a new child was added to previous one - error text) and also show again the loading indicator. so just to reset viewmodel state
 
         AppExecutor.getInstance().networkIO().schedule(new Runnable() {
             @Override
@@ -119,6 +119,7 @@ public class RecipeAPIClient {
                     } else {
                         List<Recipe> currentRecipes = mRecipes.getValue();
                         currentRecipes.addAll(list);
+                        mRecipes.postValue(currentRecipes);
                     }
                 } else {
                     String error = response.errorBody().string();

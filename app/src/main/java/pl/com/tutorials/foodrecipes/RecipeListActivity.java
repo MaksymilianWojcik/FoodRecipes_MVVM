@@ -91,6 +91,7 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     public void onCategoryClick(String category) {
         mAdapter.displayLoading();
         mRecipeListViewModel.searchRecipesAPI(category, 1);
+        mSearchView.clearFocus(); //removing focus from searchview so it won't consume click anymore. This is improtant for back button work proipely with our logic to stop the request
     }
 
     private void initSearchView(){
@@ -114,10 +115,12 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         mRecipeListViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
-                if(recipes != null && mRecipeListViewModel.isViewingRecipes()) {
-                    Testing.printRecipes(recipes, "recipesTest");
-                    mRecipeListViewModel.setIsPerformingQuery(false); //query was complete
-                    mAdapter.setmRecipes(recipes);
+                if(recipes != null) {
+                    if(mRecipeListViewModel.isViewingRecipes()) {
+                        Testing.printRecipes(recipes, "recipesTest");
+                        mRecipeListViewModel.setIsPerformingQuery(false); //query was complete
+                        mAdapter.setmRecipes(recipes);
+                    }
                 }
             }
         });
@@ -154,7 +157,6 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     private void displaySearchCategories(){
         mRecipeListViewModel.setIsViewingRecipes(false);
         mAdapter.displaySearchCategories();
-        mSearchView.clearFocus(); //removing focus from searchview so it won't consume click anymore. This is improtant for back button work proipely with our logic to stop the request
     }
 
 
