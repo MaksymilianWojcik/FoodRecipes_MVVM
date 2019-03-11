@@ -1,10 +1,12 @@
-package pl.com.tutorials.foodrecipes;
+package pl.com.tutorials.foodrecipes.base;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+
+import pl.com.tutorials.foodrecipes.R;
 
 /***
  * abstract, bo inaczej mam warningi zeby dodac do manifesta te activity. Plus jak dajemy abstact

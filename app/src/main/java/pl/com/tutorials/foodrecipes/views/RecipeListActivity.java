@@ -1,4 +1,4 @@
-package pl.com.tutorials.foodrecipes;
+package pl.com.tutorials.foodrecipes.views;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -16,6 +16,8 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import pl.com.tutorials.foodrecipes.base.BaseActivity;
+import pl.com.tutorials.foodrecipes.R;
 import pl.com.tutorials.foodrecipes.adapters.OnRecipeListener;
 import pl.com.tutorials.foodrecipes.adapters.RecipeRecyclerAdapter;
 import pl.com.tutorials.foodrecipes.models.Recipe;
@@ -119,7 +121,7 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
                     if(mRecipeListViewModel.isViewingRecipes()) {
                         Testing.printRecipes(recipes, "recipesTest");
                         mRecipeListViewModel.setIsPerformingQuery(false); //query was complete
-                        mAdapter.setmRecipes(recipes);
+                        mAdapter.setRecipes(recipes);
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package pl.com.tutorials.foodrecipes;
+package pl.com.tutorials.foodrecipes.views;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import pl.com.tutorials.foodrecipes.base.BaseActivity;
+import pl.com.tutorials.foodrecipes.R;
 import pl.com.tutorials.foodrecipes.models.Recipe;
 import pl.com.tutorials.foodrecipes.viewmodels.RecipeDetailsViewModel;
 

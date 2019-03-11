@@ -33,7 +33,6 @@ public class RecipeRepository {
     }
 
     public LiveData<List<Recipe>> getRecipes(){
-//        return recipeAPIClient.getRecipes();
         return mRecipes; //we want to return medaitor cause we gonna make change to it before
     }
 
@@ -69,7 +68,6 @@ public class RecipeRepository {
 
     public void doneQuery(List<Recipe> list){
         if(list != null){ //this means query is exhausted, 30 cause its the amount we get from rest api call
-//            if(list.size() < 30) {
             if(list.size() % 30 != 0) {
                 mIsQueryExhausted.setValue(true);
             }

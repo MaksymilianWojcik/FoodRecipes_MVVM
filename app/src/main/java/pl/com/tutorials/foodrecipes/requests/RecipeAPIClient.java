@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import pl.com.tutorials.foodrecipes.AppExecutor;
+import pl.com.tutorials.foodrecipes.base.AppExecutor;
 import pl.com.tutorials.foodrecipes.models.Recipe;
 import pl.com.tutorials.foodrecipes.requests.responses.RecipeResponse;
 import pl.com.tutorials.foodrecipes.requests.responses.RecipeSearchResponse;
@@ -39,18 +39,6 @@ public class RecipeAPIClient {
     private RecipeAPIClient(){
         mRecipes = new MutableLiveData<>();
         mRecipe = new MutableLiveData<>();
-    }
-
-    public LiveData<List<Recipe>> getRecipes(){
-        return mRecipes;
-    }
-
-    public LiveData<Recipe> getRecipe(){
-        return mRecipe;
-    }
-
-    public LiveData<Boolean> isRecipeRequestTimedout(){
-        return mRecipeRequestTimeout;
     }
 
     public void searchRecipesAPI(String query, int pageNumber){
@@ -89,7 +77,27 @@ public class RecipeAPIClient {
                 handler.cancel(true);
             }
         }, AppValues.NETWORK_TIMEOUT, TimeUnit.MILLISECONDS);
+    }
 
+    public LiveData<List<Recipe>> getRecipes(){
+        return mRecipes;
+    }
+
+    public LiveData<Recipe> getRecipe(){
+        return mRecipe;
+    }
+
+    public LiveData<Boolean> isRecipeRequestTimedout(){
+        return mRecipeRequestTimeout;
+    }
+
+    public void cancelRequest(){
+        if(retrieveRecipesRunnable != null) {
+            retrieveRecipesRunnable.cancelRequest();
+        }
+        if(retrieveSingleRecipeRunnable != null){
+            retrieveSingleRecipeRunnable.cancelRequest();
+        }
     }
 
     private class RetrieveRecipesRunnable implements Runnable {
@@ -180,14 +188,4 @@ public class RecipeAPIClient {
             cancelRequest = true;
         }
     }
-
-    public void cancelRequest(){
-        if(retrieveRecipesRunnable != null) {
-            retrieveRecipesRunnable.cancelRequest();
-        }
-        if(retrieveSingleRecipeRunnable != null){
-            retrieveSingleRecipeRunnable.cancelRequest();
-        }
-    }
-
 }
